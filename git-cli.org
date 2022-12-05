@@ -1,0 +1,134 @@
+#+TITLE: Git CLI
+
+
+* commands
+
+** diffing
+*** show unstaged changes
+    git diff
+*** show staged changes
+    git diff --staged
+    git diff --cached
+*** show both staged and unstaged changes
+    git diff HEAD
+*** show pretty logs (https://git-scm.com/docs/git-log#_pretty_formats)
+    git log --pretty=oneline
+*** show commits on current feature branch
+    git log master..HEAD
+*** show commits that will be pulled (requires fetch first)
+    git log HEAD..origin/remote_branch
+*** show last change to a file
+    git log -p [--follow] [-1] <path>
+*** show changed files in stash
+    git stash show <stash-number>
+*** show diff of files in stash
+    git stash show -p <stash-number>
+*** show changes in last in last 2 commits
+    git log -p -2
+
+** remote
+*** shows some info about a remote
+    git remote show origin
+*** fetch and merge some_remote/some_branch into current branch
+    git pull some_remote/some_branch
+*** push commits in new local branch to remote branch
+    git push --set-upstream remote_name branch_name
+*** push unpushed commits in current branch to some_remote/some_branch
+    git push some_remote some_branch
+*** push all commits in current branch to some_remote/some_branch even if it changes history
+    git push some_remote some_branch --force-with-lease
+
+** tags
+*** checkout a tagged commit
+    git checkout v1.4
+*** checkout a tagged commit's parent
+    git checkout v2.0~
+*** list tags
+    git tag
+*** add annotated tag
+    git tag -a v1.4 -m "my version 1.4"
+*** list remote tags (does not require fetch first)
+    git ls-remote --tags [remote_repo]
+
+
+
+** branches
+*** create local branch off of current branch HEAD but don't switch to it
+    git branch new_branch
+*** create local branch off of current branch HEAD and switch to it
+    git checkout -b new_branch
+*** create local branch from remote
+    git checkout <remote_branch_name> #omit remote_name
+*** create local branch from remote
+    git checkout -b <new_branch_name> <remote_name>/<remote_branch_name>
+*** delete local branch
+    git branch -d local_branch
+*** list local branches
+    git branch
+*** list local branches and show HEAD commit (tip of branch) plus work tree and upstream branch
+    git branch -vv
+*** list remote branches
+    git branch -r
+*** list remote branches (does not require fetch first)
+    git ls-remote --heads [remote_repo]
+*** list all branches
+    git branch -a
+*** fetch all branches
+    git fetch -a
+*** move accidental commits off of master branch
+    #whole series of commands
+    git stash                       # skip if all changes are committed
+    git branch my_feature
+    git reset --hard origin/master
+    git checkout my_feature
+    git stash pop                   # skip if all changes were committed
+*** undo one commit that you haven't pushed yet
+    git reset --soft HEAD^
+*** create a branch from a tag
+    git checkout -b new_branch_name tag_name
+*** push all branches
+    git push --all origin
+*** merge a other_branch into current branch
+    git merge other_branch
+*** rebase current branch onto other_branch
+    git rebase other_branch
+
+** three trees (https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified)
+*** stage all modified files
+    git add -u
+*** stage every file including untracked
+    git add .
+    git add -A
+*** unstage file
+    git reset some_file
+*** unstage all files
+    git reset
+*** stage hunks
+git add -p
+git add --patch
+git add -i
+git add --interactive
+** stashing
+*** store workspace and staged changes in a stash (removing them from workspace and index)
+    git stash
+*** view list of current stash entries
+    git stash list
+*** remove stashed changes from stash and apply to workspace
+    git stash pop <stash-number>
+
+
+** GitHub
+
+*** open a PR after push
+alias publish='!git push -u origin $(git rev-parse --abbrev-ref HEAD) && ~/projects/open-pr-after-git-push/POST_PUSH'
+
+**** open a PR on Mac
+branch=$(git rev-parse --abbrev-ref HEAD)
+host="github.com"
+userRepo=$(git remote -v | grep fetch | awk '{print $2}' | grep $host | cut -d':' -f2 | rev | cut -c5- | rev)
+
+
+if [ -n "$userRepo" ]
+then
+    open "https://$host/$userRepo/pull/compare/$branch?expand=1"
+fi
