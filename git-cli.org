@@ -109,6 +109,9 @@ git add -p
 git add --patch
 git add -i
 git add --interactive
+*** commit staged files
+git commit -m message
+
 ** stashing
 *** store workspace and staged changes in a stash (removing them from workspace and index)
     git stash
