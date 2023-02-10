@@ -17,6 +17,8 @@
     git log master..HEAD
 *** show commits that will be pulled (requires fetch first)
     git log HEAD..origin/remote_branch
+*** show commits that will be pushed
+git log remote/remote_branch..HEAD
 *** show last change to a file
     git log -p [--follow] [-1] <path>
 *** show changed files in stash
@@ -33,7 +35,7 @@
     git pull some_remote/some_branch
 *** push commits in new local branch to remote branch
     git push --set-upstream remote_name branch_name
-git push -u remove_name branch_name
+git push -u remote_name branch_name
 *** push unpushed commits in current branch to some_remote/some_branch
     git push some_remote some_branch
 *** push all commits in current branch to some_remote/some_branch even if it changes history
@@ -58,7 +60,7 @@ git push -u remove_name branch_name
     git branch new_branch
 *** create local branch off of current branch HEAD and switch to it
     git checkout -b new_branch
-*** create local branch from remote
+*** create local branch from remote that tracks remote and switch to it
     git checkout <remote_branch_name> #omit remote_name
 *** create local branch from remote
     git checkout -b <new_branch_name> <remote_name>/<remote_branch_name>
@@ -83,8 +85,6 @@ git push -u remove_name branch_name
     git reset --hard origin/master
     git checkout my_feature
     git stash pop                   # skip if all changes were committed
-*** undo one commit that you haven't pushed yet
-    git reset --soft HEAD^
 *** create a branch from a tag
     git checkout -b new_branch_name tag_name
 *** push all branches
@@ -93,6 +93,10 @@ git push -u remove_name branch_name
     git merge other_branch
 *** rebase current branch onto other_branch
     git rebase other_branch
+*** overwrite current branch with another branch
+git reset --hard other_branch
+*** overwrite current local branch with remote branch
+git reset --hard remote/remote_branch
 
 ** three trees (https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified)
 *** stage all modified files
@@ -111,6 +115,15 @@ git add -i
 git add --interactive
 *** commit staged files
 git commit -m message
+*** undo one commit that you haven't pushed yet
+    git reset --soft HEAD^
+*** remove all changes that haven't been committed
+git reset --hard
+git reset --hard HEAD
+*** revert most recent commit
+git revert HEAD
+*** stage and commit already tracked files that were modified
+git commit -am 'message'
 
 ** stashing
 *** store workspace and staged changes in a stash (removing them from workspace and index)
@@ -119,7 +132,8 @@ git commit -m message
     git stash list
 *** remove stashed changes from stash and apply to workspace
     git stash pop <stash-number>
-
+*** apply stashed changes to workspace
+git stash apply <stash-number>
 
 ** GitHub
 
