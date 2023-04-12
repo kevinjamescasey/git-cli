@@ -1,6 +1,5 @@
 #+TITLE: Git CLI
 
-
 * commands
 
 ** diffing
@@ -14,11 +13,17 @@
 *** show pretty logs (https://git-scm.com/docs/git-log#_pretty_formats)
     git log --pretty=oneline
 *** show commits on current feature branch
-    git log master..HEAD
+git log master..HEAD
 *** show commits that will be pulled (requires fetch first)
-    git log HEAD..origin/remote_branch
+git log HEAD..origin/remote_branch
+git log ..origin/remote_branch
+*** show diff of commits that will be pulled (requires fetch first)
+https://git-scm.com/docs/git-log#_generating_patch_text_with_p
+git log ..origin/remote_branch -p
+git diff HEAD ..origin/remote_branch
+git diff ..origin/remote_branch
 *** show commits that will be pushed
-git log remote/remote_branch..HEAD
+git log origin/remote_branch..HEAD
 *** show last change to a file
     git log -p [--follow] [-1] <path>
 *** show changed files in stash
@@ -60,8 +65,10 @@ git push -u remote_name branch_name
     git branch new_branch
 *** create local branch off of current branch HEAD and switch to it
     git checkout -b new_branch
+    git switch -c new_branch
 *** create local branch from remote that tracks remote and switch to it
     git checkout <remote_branch_name> #omit remote_name
+    git switch <remote_branch_name>
 *** create local branch from remote
     git checkout -b <new_branch_name> <remote_name>/<remote_branch_name>
 *** delete local branch
@@ -89,14 +96,24 @@ git push -u remote_name branch_name
     git checkout -b new_branch_name tag_name
 *** push all branches
     git push --all origin
-*** merge a other_branch into current branch
-    git merge other_branch
+*** merge other_branch into current branch
+git merge other_branch
+*** merge other branch into current branch without editing commit message
+git merge --no-edit other_branch
+*** resolve merge conflict by keeping what was already in the current branch before the merge
+git checkout --ours -- pathspec
+git checkout HEAD -- pathspec
+*** resolve merge conflict by overwriting what was in the current branch with other_branch
+git checkout --theirs -- pathspec
+git checkout other_branch -- pathspec
 *** rebase current branch onto other_branch
     git rebase other_branch
 *** overwrite current branch with another branch
 git reset --hard other_branch
 *** overwrite current local branch with remote branch
 git reset --hard remote/remote_branch
+*** rename a local branch
+git branch -m old_name new_name
 
 ** three trees (https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified)
 *** stage all modified files
@@ -105,7 +122,7 @@ git reset --hard remote/remote_branch
     git add .
     git add -A
 *** unstage file
-    git reset some_file
+    git reset some_pathspec
 *** unstage all files
     git reset
 *** stage hunks
@@ -120,10 +137,15 @@ git commit -m message
 *** remove all changes that haven't been committed
 git reset --hard
 git reset --hard HEAD
-*** revert most recent commit
+*** revert most recent commit by adding a new commit that reverses the changes
 git revert HEAD
 *** stage and commit already tracked files that were modified
 git commit -am 'message'
+*** discard changes in an unstaged file
+git restore some_pathspec
+git checkout some_pathspec
+*** ammend the most recent commit message by replacing commit at tip of branch
+git commit --amend -m 'message'
 
 ** stashing
 *** store workspace and staged changes in a stash (removing them from workspace and index)
@@ -134,6 +156,13 @@ git commit -am 'message'
     git stash pop <stash-number>
 *** apply stashed changes to workspace
 git stash apply <stash-number>
+*** stash only the staged files
+git stash --staged
+git stash -S
+*** interactively store hunks into stash
+git stash -p
+*** remove a stash entry
+git stash drop <stash-number>
 
 ** GitHub
 
@@ -150,3 +179,18 @@ if [ -n "$userRepo" ]
 then
     open "https://$host/$userRepo/pull/compare/$branch?expand=1"
 fi
+
+* docs
+visual reference: https://marklodato.github.io/visual-git-guide/index-en.html
+visual interactive cheatsheet focused on moving changes between various locations : https://ndpsoftware.com/git-cheatsheet.html#loc=index;
+command cheatsheet: https://quickref.me/git
+command cheatsheet: https://education.github.com/git-cheat-sheet-education.pdf
+command cheatsheet: https://about.gitlab.com/images/press/git-cheat-sheet.pdf
+gloassary of terms: https://git-scm.com/docs/gitglossary
+command reference: https://git-scm.com/docs
+
+* ideas
+** templatize this guide
+have variables like remote=origin and feature_branch=mySpecialFeature
+All of the example commands will have variables like ${remote} and ${feature_branch} that get replaced by the value you set.
+That way you can just copy and paste the commands instead of having to copy, paste, and modify
