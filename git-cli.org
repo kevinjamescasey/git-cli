@@ -1,7 +1,6 @@
 #+TITLE: Git CLI
 
 * commands
-
 ** diffing
 *** show unstaged changes
     git diff
@@ -57,7 +56,6 @@ git push -u remote_name branch_name
     git tag -a v1.4 -m "my version 1.4"
 *** list remote tags (does not require fetch first)
     git ls-remote --tags [remote_repo]
-
 
 
 ** branches
@@ -116,6 +114,11 @@ git reset --hard remote/remote_branch
 git branch -m old_name new_name
 
 ** three trees (https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified)
+*** view staged and unstaged changes
+git status
+git status -s
+*** view staged and unstaged changes ingoring untracked files
+git status -uno
 *** stage all modified files
     git add -u
 *** stage every file including untracked
@@ -179,6 +182,7 @@ if [ -n "$userRepo" ]
 then
     open "https://$host/$userRepo/pull/compare/$branch?expand=1"
 fi
+
 
 * docs
 visual reference: https://marklodato.github.io/visual-git-guide/index-en.html
