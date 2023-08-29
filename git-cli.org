@@ -90,13 +90,13 @@ git push --force-with-lease
     git branch -a
 *** fetch all branches
     git fetch -a
-*** move accidental commits off of master branch
+*** move accidental un-pushed commits off of master branch
     #whole series of commands
-    git stash                       # skip if all changes are committed
-    git branch my_feature
-    git reset --hard origin/master
-    git checkout my_feature
-    git stash pop                   # skip if all changes were committed
+    git stash                       # stage uncommited changes if any
+    git branch my_feature           # create new branch with all of the commits
+    git reset --hard origin/master  # remove the commits
+    git checkout my_feature         # switch to new branch
+    git stash pop                   # apply staged changes if any
 *** create a branch from a tag
     git checkout -b new_branch_name tag_name
 *** push all branches
@@ -144,16 +144,18 @@ git add --interactive
 git commit -m message
 *** undo one commit that you haven't pushed yet
     git reset --soft HEAD^
-*** remove all changes that haven't been committed
+*** reset the index and working tree to how it was discarding changes to tracked files that haven't been committed and restoring files that had been deleted
 git reset --hard
 git reset --hard HEAD
 *** revert most recent commit by adding a new commit that reverses the changes
 git revert HEAD
 *** stage and commit already tracked files that were modified
 git commit -am 'message'
-*** discard changes in an unstaged file
+*** discard(remove) changes in an unstaged file
 git restore some_pathspec
 git checkout some_pathspec
+*** discard(remove) untracked files from working tree
+git clean
 *** ammend the most recent commit message by replacing commit at tip of branch
 git commit --amend -m 'message'
 
