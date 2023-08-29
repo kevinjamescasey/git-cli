@@ -105,14 +105,17 @@ git push --force-with-lease
 git merge other_branch
 *** merge other branch into current branch without editing commit message
 git merge --no-edit other_branch
-*** resolve merge conflict by keeping what was already in the current branch before the merge
+*** resolve merge or rebase conflict by keeping what was already in the current branch before the merge
 git checkout --ours -- pathspec
 git checkout HEAD -- pathspec
-*** resolve merge conflict by overwriting what was in the current branch with other_branch
+*** resolve merge or rebase conflict by overwriting what was in the current branch with other_branch
 git checkout --theirs -- pathspec
 git checkout other_branch -- pathspec
 *** rebase current branch onto other_branch
     git rebase other_branch
+*** change parent branch
+git rebase --onto new-parent old-parent
+example for when you meant to branch off of staging instead of main: git rebase --onto staging main
 *** overwrite current branch with another branch
 git reset --hard other_branch
 *** overwrite current local branch with remote branch
