@@ -47,8 +47,10 @@ git log origin/remote_branch..HEAD
 git push -u remote_name branch_name
 *** push unpushed commits in current branch to some_remote/some_branch
     git push some_remote some_branch
-*** push all commits in current branch to some_remote/some_branch even if it changes history
+*** overwrite some_remote/some_branch with current branch's commits even if it changes history
     git push some_remote some_branch --force-with-lease
+*** overwrite remote tracked branch (possibly changing history)
+git push --force-with-lease
 
 ** tags
 *** checkout a tagged commit
