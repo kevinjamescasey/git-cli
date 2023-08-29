@@ -1,6 +1,11 @@
 #+TITLE: Git CLI
 
 * commands
+** status
+*** show status without untracked files
+git status -uno
+git status --untracked-files=no
+
 ** diffing
 *** show unstaged changes
     git diff
