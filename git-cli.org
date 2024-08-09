@@ -58,6 +58,8 @@ git push -u remote_name branch_name
     git push some_remote some_branch --force-with-lease
 *** overwrite remote tracked branch (possibly changing history)
 git push --force-with-lease
+*** clone a remote repository to a given directory
+git clone some_url target_directory
 
 ** tags
 *** checkout a tagged commit
