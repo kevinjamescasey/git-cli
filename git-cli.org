@@ -188,6 +188,14 @@ git stash -p
 *** remove a stash entry
 git stash drop <stash-number>
 
+** Esoteric but Useful
+*** shell function for changing to git repo root directory
+function cdgitroot() {
+
+cd `git rev-parse --show-toplevel`
+
+}
+
 ** GitHub
 
 *** open a PR after push
