@@ -188,12 +188,21 @@ git stash -p
 *** remove a stash entry
 git stash drop <stash-number>
 
-** Esoteric but Useful
-*** shell function for changing to git repo root directory
+** Useful shell functions
+*** changes to git repo root directory
 function cdgitroot() {
 
 cd `git rev-parse --show-toplevel`
 
+}
+*** merges into given branch, pushes given branch, and switches back to original branch
+mergeIntoAndPush() {
+  CURRENT=$(git rev-parse --abbrev-ref HEAD)
+  git switch $1
+  git pull
+  git merge --no-edit "$CURRENT"
+  git push
+  git switch -
 }
 
 ** GitHub
