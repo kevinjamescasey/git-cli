@@ -38,8 +38,10 @@ git log origin/remote_branch..HEAD
     git log -p -2
 
 ** remote
+*** show names of remotes
+  git remote
 *** shows some info about a remote
-    git remote show origin
+  git remote show origin
 *** fetch and merge some_remote/some_branch into current branch
     git pull some_remote/some_branch
 *** fetch and merge remote tracked branch into current branch
