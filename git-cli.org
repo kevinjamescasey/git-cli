@@ -6,7 +6,7 @@
 git status -uno
 git status --untracked-files=no
 
-** diffing
+** history (see what changed when)
 *** show unstaged changes
     git diff
 *** show staged changes
@@ -34,8 +34,10 @@ git log origin/remote_branch..HEAD
     git stash show <stash-number>
 *** show diff of files in stash
     git stash show -p <stash-number>
-*** show changes in last in last 2 commits
+*** show changes in last 2 commits
     git log -p -2
+*** show a GUI log of commits with diffs
+gitk
 
 ** remote
 *** show names of remotes
@@ -52,8 +54,9 @@ git pull --rebase
 *** fetch remote tracked branch and merge it into current branch only if a fast forward can be used
 git pull -ff-only
 *** push commits in new local branch to remote branch
-    git push --set-upstream remote_name branch_name
+git push --set-upstream remote_name branch_name
 git push -u remote_name branch_name
+git push -u remote_name HEAD
 *** push unpushed commits in current branch to some_remote/some_branch
     git push some_remote some_branch
 *** overwrite some_remote/some_branch with current branch's commits even if it changes history
@@ -62,7 +65,21 @@ git push -u remote_name branch_name
 git push --force-with-lease
 *** clone a remote repository to a given directory
 git clone some_url target_directory
-
+*** copy entire remote repository as if forking
+clone it normally to a local repository and then one of the following
+**** copy an entire local repository (not including uncommited changes) to a new remote repository
+git clone path_of_exising_local_repo path_of_new_local_repo
+cd path_of_new_local_repo
+git remote rm remote_repo
+gh repo create -s . --public
+(if UI is used to create remote also do) git remote add origin new_remote_repo_url
+git push --mirror (or push individual branches with) (git push -u origin branch_name)
+**** copy entire local repository and working dirtectory tree to new remote repsoitory (also copies transient files like libraries in node_modules)
+cp -r path_of_exising_local_repo path_of_new_local_repo
+cd path_of_new_local_repo
+git remote rm remote_repo
+gh repo create -s . --public
+git push --mirror
 ** tags
 *** checkout a tagged commit
     git checkout v1.4
@@ -74,7 +91,6 @@ git clone some_url target_directory
     git tag -a v1.4 -m "my version 1.4"
 *** list remote tags (does not require fetch first)
     git ls-remote --tags [remote_repo]
-
 
 ** branches
 *** create local branch off of current branch HEAD but don't switch to it
@@ -103,11 +119,11 @@ git clone some_url target_directory
     git fetch -a
 *** move accidental un-pushed commits off of master branch
     #whole series of commands
-    git stash                       # stage uncommited changes if any
+    git stash                       # stash uncommited changes if any
     git branch my_feature           # create new branch with all of the commits
     git reset --hard origin/master  # remove the commits
     git checkout my_feature         # switch to new branch
-    git stash pop                   # apply staged changes if any
+    git stash pop                   # apply stashed changes if any
 *** create a branch from a tag
     git checkout -b new_branch_name tag_name
 *** push all branches
@@ -156,7 +172,7 @@ git add -i
 git add --interactive
 *** commit staged files
 git commit -m message
-*** undo one commit that you haven't pushed yet
+*** undo/remove one commit that you haven't pushed yet
     git reset --soft HEAD^
 *** reset the index and working tree to how it was discarding changes to tracked files that haven't been committed and restoring files that had been deleted
 git reset --hard
@@ -170,26 +186,54 @@ git restore some_pathspec
 git checkout some_pathspec
 *** discard(remove) untracked files from working tree
 git clean
-*** ammend the most recent commit message by replacing commit at tip of branch
+*** ammend the commit message on the most recent commit by replacing commit at tip of branch
 git commit --amend -m 'message'
-
+*** ammend the author on the most recent commit by replacing the commit at the tip of the branch
+git commit --amend --author="Kevin Casey <kevin.james.casey@gmail.com>"
+*** interactively change commits after a certain commit
+git rebase -i last_commit_to_leave_alone
+# then edit the file to choose what to do on each commit
+# then ammend each commit that needs to change
+git rebase --continue
+**** example ammending last commit to be signed
+git rebase -i HEAD~1
+# replace "pick" with "edit"
+git commit --amend -S --no-edit
+git rebase --continue
 ** stashing
 *** store workspace and staged changes in a stash (removing them from workspace and index)
     git stash
+    git stash push
+**** include a message
+git stash -m
+**** include the untracked files
+git stash --include-untracked
+git stash -u
+**** stash only the staged files
+git stash --staged
+git stash -S
+**** interactively store hunks into stash
+git stash -p
 *** view list of current stash entries
     git stash list
 *** remove stashed changes from stash and apply to workspace
     git stash pop <stash-number>
+**** pop the most recently pushed stash
+  #omit the number
+  git stash pop
 *** apply stashed changes to workspace
 git stash apply <stash-number>
-*** stash only the staged files
-git stash --staged
-git stash -S
-*** interactively store hunks into stash
-git stash -p
+
 *** remove a stash entry
 git stash drop <stash-number>
 
+** config
+*** show config values and which files they're defined in
+git config --list --show-origin
+*** edit a config item globally
+git config --global item_name new_value
+**** example
+git config --global user.email email@gmail.com
 ** Useful shell functions
 *** changes to git repo root directory
 function cdgitroot() {
@@ -223,7 +267,17 @@ then
     open "https://$host/$userRepo/pull/compare/$branch?expand=1"
 fi
 
-
+**** gh cli
+***** install it
+brew install gh
+***** list repositories
+gh repo list
+***** create a remote public repository from the current directory
+gh repo create -s . --public
+***** go to web page for current repository
+gh browse
+***** log into GitHub account
+gh auth login
 * docs
 visual reference: https://marklodato.github.io/visual-git-guide/index-en.html
 visual interactive cheatsheet focused on moving changes between various locations : https://ndpsoftware.com/git-cheatsheet.html#loc=index;
