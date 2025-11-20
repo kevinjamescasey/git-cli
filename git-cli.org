@@ -55,6 +55,9 @@ git pull --no-rebase
 git pull --rebase
 *** fetch remote tracked branch and merge it into current branch only if a fast forward can be used
 git pull -ff-only
+*** fetch remote_branch from remote_name and rebase current branch onto it while favoring the content of the current local branch in any conflict
+# yes, the ours vs theirs seems backwards
+git pull --rebase -X theirs remote_name remote_branch
 *** push commits in new local branch to remote branch
 git push --set-upstream remote_name branch_name
 git push -u remote_name branch_name
