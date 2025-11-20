@@ -43,7 +43,9 @@ gitk
 *** show names of remotes
   git remote
 *** shows some info about a remote
-  git remote show origin
+  git remote show remote_name
+*** change remote URL
+  git remote set-url remote_name new_url
 *** fetch and merge some_remote/some_branch into current branch
     git pull some_remote/some_branch
 *** fetch and merge remote tracked branch into current branch
