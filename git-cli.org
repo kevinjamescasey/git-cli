@@ -42,10 +42,14 @@ gitk
 ** remote
 *** show names of remotes
   git remote
+*** show names and URLs of remotes
+git remote -v
 *** shows some info about a remote
   git remote show remote_name
 *** change remote URL
   git remote set-url remote_name new_url
+*** add new remote
+git remote add remote_name remote_url
 *** fetch and merge some_remote/some_branch into current branch
     git pull some_remote/some_branch
 *** fetch and merge remote tracked branch into current branch
@@ -177,8 +181,9 @@ git add -i
 git add --interactive
 *** commit staged files
 git commit -m message
-*** undo/remove one commit that you haven't pushed yet
+*** undo/remove/discard one commit
     git reset --soft HEAD^
+    # This changes history. So if you already pushed that one commit to a shared repo, you'll have to force push this change.
 *** reset the index and working tree to how it was discarding changes to tracked files that haven't been committed and restoring files that had been deleted
 git reset --hard
 git reset --hard HEAD
