@@ -181,7 +181,7 @@ git add -i
 git add --interactive
 *** commit staged files
 git commit -m message
-*** undo/remove/discard one commit
+*** undo/remove/discard most recent one commit
     git reset --soft HEAD^
     # This changes history. So if you already pushed that one commit to a shared repo, you'll have to force push this change.
 *** reset the index and working tree to how it was discarding changes to tracked files that haven't been committed and restoring files that had been deleted
@@ -196,6 +196,8 @@ git restore some_pathspec
 git checkout some_pathspec
 *** discard(remove) untracked files from working tree
 git clean
+*** discard(remove) untracked directories and files from working tree
+git clean -d
 *** ammend the commit message on the most recent commit by replacing commit at tip of branch
 git commit --amend -m 'message'
 *** ammend the author on the most recent commit by replacing the commit at the tip of the branch
