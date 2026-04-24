@@ -113,7 +113,11 @@ git push --mirror
 *** create local branch from remote
     git checkout -b <new_branch_name> <remote_name>/<remote_branch_name>
 *** delete local branch
-    git branch -d local_branch
+git branch -d local_branch
+*** delete remote-tracking branch
+git branch -d -r <remote_name>/<remote_branch_name>
+*** delete remote branch and its local remote-tracing branch
+git push origin --delete <remote_branch_name>
 *** list local branches
     git branch
 *** list local branches and show HEAD commit (tip of branch) plus work tree and upstream branch
@@ -181,9 +185,12 @@ git add -i
 git add --interactive
 *** commit staged files
 git commit -m message
-*** undo/remove/discard most recent one commit
+*** undo/remove/discard most recent one commit but leave their changes staged in the index and in the working tree
     git reset --soft HEAD^
     # This changes history. So if you already pushed that one commit to a shared repo, you'll have to force push this change.
+*** undo/remove/discard most recent n commits and don't save their changes in the index or working tree
+git rest --hard HEAD~n
+# This changes history. So if you already pushed those n commits toa. shared repo, you'll have to force push this change.
 *** reset the index and working tree to how it was discarding changes to tracked files that haven't been committed and restoring files that had been deleted
 git reset --hard
 git reset --hard HEAD
