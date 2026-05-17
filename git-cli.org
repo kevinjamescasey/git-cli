@@ -308,6 +308,17 @@ command reference: https://git-scm.com/docs
 
 * ideas
 ** templatize this guide
-have variables like remote=origin and feature_branch=mySpecialFeature
+have variables like
+        remote=origin
+        trunk=main
+        feature_branch=mySpecialFeature
 All of the example commands will have variables like ${remote} and ${feature_branch} that get replaced by the value you set.
 That way you can just copy and paste the commands instead of having to copy, paste, and modify
+** UI like Clojure Quick Ref
+find by box at top that filters based on typed text
+outline / table of contents on left
+clicking a task shows detailed description with steps to complete
+variations show different ways to complete the same task
+** modes
+minimal mode
+learning mode with extra explanations
